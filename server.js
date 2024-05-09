@@ -15,15 +15,15 @@ app.post('/tasks', (req,res)=>{
         return res.status(400).json({ error: 'Title and status are required.' });
       }
 
-      const newTask = {
+      const new_task = {
         id: tasks.length + 1,
         title,
         description,
         status
       };
       
-      tasks.push(newTask);
-      res.status(201).json(newTask);
+      tasks.push(new_task);
+      res.status(201).json(new_task);
 
 });
 
@@ -60,6 +60,18 @@ app.put('/tasks/:id', (req, res) => {
 });
 
 
+// Delete Task
+app.delete('/tasks/:id', (req, res) => {
+    const taskId = parseInt(req.params.id);
+
+    const index = tasks.findIndex(task => task.id === taskId);
+    if (index === -1) {
+        return res.status(404).json({ error: 'Task not found' });
+    }
+
+    tasks.splice(index, 1);
+    res.json({ message: 'Task deleted successfully' });
+});
 
 
 app.listen(3000,()=>{
