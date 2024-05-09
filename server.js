@@ -33,6 +33,26 @@ app.get('/tasks' , (req,res)=>{
     res.json(tasks);
 });
 
+//Update Tasks
+
+app.put('/tasks/:id' , (req,res)=>{
+    const task_id = parseInt(req.params.id);
+    const {title , description , status} = req.body;
+
+     const task_to_update = tasks.find(task => task.id ===task_id);
+     if(!task_to_update){
+        return res.status(404).json({error: 'Task not found'});
+
+     }
+
+
+     task_to_update.title = title || task_to_update.title;
+     task_to_update.description = description || task_to_update;
+     task_to_update.status = status || task_to_update.status;
+
+     res.json(task_to_update);
+
+})
 
 app.listen(3000,()=>{
     console.log('Node API is running on port 3000')
