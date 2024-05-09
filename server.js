@@ -33,26 +33,34 @@ app.get('/tasks' , (req,res)=>{
     res.json(tasks);
 });
 
-//Update Tasks
-
-app.put('/tasks/:id' , (req,res)=>{
+// Update Task
+app.put('/tasks/:id', (req, res) => {
     const task_id = parseInt(req.params.id);
-    const {title , description , status} = req.body;
+    const { title, description, status } = req.body;
 
-     const task_to_update = tasks.find(task => task.id ===task_id);
-     if(!task_to_update){
-        return res.status(404).json({error: 'Task not found'});
+    console.log('Updating task with ID:', task_id);
+    console.log('New task data:', { title, description, status });
 
-     }
+    // Find index of task in tasks array
+    const task_index = tasks.findIndex(task => task.id === task_id);
+
+    // If task not found, return 404 error
+    if (task_index === -1) {
+        console.log('Task not found');
+        return res.status(404).json({ error: 'Task not found' });
+    }
+
+    // Update task with new data
+    tasks[task_index].title = title || tasks[task_index].title;
+    tasks[task_index].description = description || tasks[task_index].description;
+    tasks[task_index].status = status || tasks[task_index].status;
+
+    console.log('Task updated successfully');
+    res.json({ message: 'Task updated successfully', task: tasks[task_index] });
+});
 
 
-     task_to_update.title = title || task_to_update.title;
-     task_to_update.description = description || task_to_update;
-     task_to_update.status = status || task_to_update.status;
 
-     res.json(task_to_update);
-
-})
 
 app.listen(3000,()=>{
     console.log('Node API is running on port 3000')
