@@ -28,6 +28,10 @@ app.post('/tasks', (req,res)=>{
 });
 
 
+//Read tasks
+app.get('/tasks' , (req,res)=>{
+    res.json(tasks);
+});
 
 
 app.listen(3000,()=>{
